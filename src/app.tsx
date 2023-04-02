@@ -15,7 +15,6 @@ import {
   Icon,
   NumberInput,
 } from "@northlight/ui";
-
 import { PlusSolid } from "@northlight/icons";
 import { useToast } from "@chakra-ui/react";
 import { palette } from "@northlight/tokens";
@@ -24,6 +23,7 @@ import usersList from "./users";
 import scoresList from "./scores";
 import { sortUsers, getUserDetails } from "./helpers/helpers.js";
 import "./index.css";
+import AddUserForm from "./components/AddUserForm.js";
 interface ExternalLinkProps {
   href: string;
   children: ReactNode;
@@ -48,6 +48,7 @@ export default function App() {
   const [userScores, setUserScores] = useState(null);
   const [userListData, setUserListData] = useState([...usersList]);
   const [scoresData, setScoresData] = useState([...scoresList]);
+  const [addUser, setAddUser] = useState(false);
   function handleSheetData(data: ExcelRow[]) {
     // replace this log with actual handling of the data
     console.log(data);
@@ -57,23 +58,12 @@ export default function App() {
     setAllUserData(sortedUsers);
   }, []);
 
-  // ======================= From ============================
-  const validation = (values: any) => {
-    const errors: any = {};
-    if (values.firstName === "admin") {
-      errors.firstName = {
-        message: "Nice try",
-      };
-    }
-    if (values.score === "") {
-      errors.score = {
-        message: "Nice try",
-      };
-    }
-    return errors;
+  const handleAddUser = () => {
+    setAddUser(true);
   };
 
   const onSubmit = (values) => {
+    console.log(111);
     let user = allUserData.find(
       (element) => element.name.toLowerCase() === values.name.toLowerCase()
     );
@@ -110,6 +100,7 @@ export default function App() {
     const sortedUsers = sortUsers(allUsers, allScoresData);
     setAllUserData(sortedUsers);
     setUserScores(null);
+    setAddUser(false);
   };
 
   const handleUserScores = (userId) => {
@@ -129,6 +120,7 @@ export default function App() {
               <H2>
                 List of Users{" "}
                 <IconButton
+                  onClick={handleAddUser}
                   isRound={true}
                   aria-label="create"
                   variant="success"
@@ -165,6 +157,7 @@ export default function App() {
                   )}
                 </div>
               </Card>
+              {addUser && <AddUserForm onSubmit={onSubmit} />}
             </Box>
           </VStack>
         </HStack>

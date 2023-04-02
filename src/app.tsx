@@ -105,7 +105,6 @@ export default function App() {
       });
     } else {
       //a new ueser is added
-      createNewUser(values.name);
       const newUser = createNewUser(values.name);
       allScoresData.push({ userId: newUser._id, score: values.score });
       allUsers.push(newUser);

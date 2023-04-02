@@ -34,10 +34,29 @@ export default function App() {
   const [userListData, setUserListData] = useState<UserType[]>([...usersList]);
   const [scoresData, setScoresData] = useState<ScoreType[]>([...scoresList]);
   const [addUser, setAddUser] = useState<boolean>(false);
-  function handleSheetData(data: ExcelRow[]) {
-    // replace this log with actual handling of the data
-    console.log(data);
-  }
+
+  const handleSheetData = (data: ExcelRow[]) => {
+    const allUsers = [...userListData];
+    const allScoresData = [...scoresData];
+    for (let i: number = 0; i < data.length; i++) {
+      const newUser = createNewUser(data[i].name);
+      allUsers.push(newUser);
+      allScoresData.push({ userId: newUser._id, score: data[i].score });
+      allUsers.push(newUser);
+    }
+    setUserListData(allUsers);
+    setScoresData(allScoresData);
+    const sortedUsers = sortUsers(allUsers, allScoresData);
+    setAllUserData(sortedUsers);
+  };
+
+  const createNewUser = (name: string) => {
+    const newUser = {
+      name,
+      _id: Math.floor(Math.random() * 1000),
+    };
+    return newUser;
+  };
   useEffect(() => {
     const sortedUsers = sortUsers(usersList, scoresList);
     setAllUserData(sortedUsers);
@@ -48,7 +67,6 @@ export default function App() {
   };
 
   const onSubmit = (values: FormValuesType) => {
-    console.log("values", values);
     let user = allUserData.find(
       (element) => element.name.toLowerCase() === values.name.toLowerCase()
     );
@@ -62,14 +80,12 @@ export default function App() {
         variant: "solid",
         status: "success",
         title: "Score Updated!",
-        description: `The scores of ${values.name} were updated!`,
+        description: `The scores of "${values.name}" were updated!`,
       });
     } else {
       //a new ueser is added
-      const newUser = {
-        name: values.name,
-        _id: Math.floor(Math.random() * 1000),
-      };
+      createNewUser(values.name);
+      const newUser = createNewUser(values.name);
       allScoresData.push({ userId: newUser._id, score: values.score });
       allUsers.push(newUser);
       toast({
@@ -77,7 +93,7 @@ export default function App() {
         variant: "solid",
         status: "success",
         title: "User Added",
-        description: `The new user ${values.name} was added!`,
+        description: `The new user "${values.name}" was added!`,
       });
     }
     setUserListData(allUsers);

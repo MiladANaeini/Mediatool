@@ -36,9 +36,29 @@ export default function App() {
   const [addUser, setAddUser] = useState<boolean>(false);
 
   const handleSheetData = (data: ExcelRow[]) => {
+    if (!data || !data.length) {
+      toast({
+        position: "top",
+        variant: "solid",
+        status: "error",
+        title: "Empty file",
+        description: `The excel file you uploaded does not have any data!`,
+      });
+      return;
+    }
     const allUsers = [...userListData];
     const allScoresData = [...scoresData];
     for (let i: number = 0; i < data.length; i++) {
+      if (!data[i].name || !data[i].score) {
+        toast({
+          position: "top",
+          variant: "solid",
+          status: "error",
+          title: "Wrong excel sheet",
+          description: `The excel file you uploaded does not include the right data set!`,
+        });
+        return;
+      }
       const newUser = createNewUser(data[i].name);
       allUsers.push(newUser);
       allScoresData.push({ userId: newUser._id, score: data[i].score });

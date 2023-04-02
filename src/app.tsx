@@ -1,5 +1,5 @@
-import React, { ReactNode, useState, useEffect } from "react";
-import { Link, ChakraProvider } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 import {
   Container,
   Box,
@@ -12,7 +12,6 @@ import {
 } from "@northlight/ui";
 import { PlusSolid } from "@northlight/icons";
 import { useToast } from "@chakra-ui/react";
-import { palette } from "@northlight/tokens";
 import { ExcelDropzone, ExcelRow } from "./excel-dropzone.jsx";
 import usersList from "./users";
 import scoresList from "./scores";
@@ -20,30 +19,20 @@ import { sortUsers, getUserDetails } from "./helpers/helpers.js";
 import "./index.css";
 import AddUserForm from "./components/AddUserForm.js";
 import UserList from "./components/UserList.js";
-interface ExternalLinkProps {
-  href: string;
-  children: ReactNode;
-}
-
-const ExternalLink = ({ href, children }: ExternalLinkProps) => (
-  <Link
-    href={href}
-    isExternal
-    sx={{ color: palette.blue["500"], textDecoration: "underline" }}
-  >
-    {children}
-  </Link>
-);
+import {
+  ScoreType,
+  UserType,
+  UserScoreType,
+  FormValuesType,
+  MergedUserScoreType,
+} from "./interfaces/interfaces.js";
 
 export default function App() {
-  interface IshowAllUserScores {
-    name: string;
-  }
   const toast = useToast();
-  const [allUserData, setAllUserData] = useState([]);
-  const [userScores, setUserScores] = useState(null);
-  const [userListData, setUserListData] = useState([...usersList]);
-  const [scoresData, setScoresData] = useState([...scoresList]);
+  const [allUserData, setAllUserData] = useState<MergedUserScoreType[]>([]);
+  const [userScores, setUserScores] = useState<UserScoreType | null>(null);
+  const [userListData, setUserListData] = useState<UserType[]>([...usersList]);
+  const [scoresData, setScoresData] = useState<ScoreType[]>([...scoresList]);
   const [addUser, setAddUser] = useState<boolean>(false);
   function handleSheetData(data: ExcelRow[]) {
     // replace this log with actual handling of the data
@@ -58,7 +47,7 @@ export default function App() {
     setAddUser(true);
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values: FormValuesType) => {
     let user = allUserData.find(
       (element) => element.name.toLowerCase() === values.name.toLowerCase()
     );

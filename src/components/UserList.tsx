@@ -2,7 +2,14 @@ import React from "react";
 import { Grid, GridItem, Card } from "@chakra-ui/react";
 import { Button } from "@northlight/ui";
 import UserScoresList from "./UserScoresList";
-const UserList = ({ allUserData, handleUserScores, userScores }) => {
+import { UserScoreType, MergedUserScoreType } from "../interfaces/interfaces";
+
+interface PropTypes {
+  userScores: UserScoreType;
+  handleUserScores: (userId: number) => void;
+  allUserData: MergedUserScoreType[];
+}
+const UserList = ({ allUserData, handleUserScores, userScores }: PropTypes) => {
   return (
     <Card className="mt-1 mb-1">
       <div className="p-1">

@@ -1,8 +1,13 @@
 import React from "react";
 import { Grid } from "@chakra-ui/react";
 import { H5 } from "@northlight/ui";
+import { UserScoreType } from "../interfaces/interfaces";
 
-const UserScoresList = ({ userScores }) => {
+interface PropTypes {
+  userScores: UserScoreType | null;
+}
+
+const UserScoresList = ({ userScores }: PropTypes) => {
   return (
     <>
       {userScores && (

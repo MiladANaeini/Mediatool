@@ -7,8 +7,13 @@ import {
   NumberInput,
   H5,
 } from "@northlight/ui";
+import { FormValuesType } from "../interfaces/interfaces";
 
-const AddUserForm = ({ onSubmit }) => {
+interface PropTypes {
+  onSubmit: (values: FormValuesType) => void;
+}
+
+const AddUserForm = ({ onSubmit }: PropTypes) => {
   const validation = (values: any) => {
     const errors: any = {};
     if (values.firstName === "admin") {
@@ -28,7 +33,7 @@ const AddUserForm = ({ onSubmit }) => {
     <div className="mt-2">
       <H5 className="mb-1">Add new user or edit existing user's scores</H5>
       <Form
-        initialValues={{ name: "", score: "" }}
+        initialValues={{ name: "", score: 0 }}
         onSubmit={onSubmit}
         formSettings={{
           mode: "onSubmit",

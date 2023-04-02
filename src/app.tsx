@@ -77,6 +77,7 @@ export default function App() {
     };
     return newUser;
   };
+
   useEffect(() => {
     const sortedUsers = sortUsers(usersList, scoresList);
     setAllUserData(sortedUsers);

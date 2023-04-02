@@ -12,9 +12,9 @@ import {
 } from "@northlight/ui";
 import { PlusSolid } from "@northlight/icons";
 import { useToast } from "@chakra-ui/react";
-import { ExcelDropzone, ExcelRow } from "./excel-dropzone.jsx";
-import usersList from "./users";
-import scoresList from "./scores";
+import { ExcelDropzone, ExcelRow } from "./components/excel-dropzone.js";
+import usersList from "./data/users";
+import scoresList from "./data/scores";
 import { sortUsers, getUserDetails } from "./helpers/helpers.js";
 import "./index.css";
 import AddUserForm from "./components/AddUserForm.js";
@@ -48,6 +48,7 @@ export default function App() {
   };
 
   const onSubmit = (values: FormValuesType) => {
+    console.log("values", values);
     let user = allUserData.find(
       (element) => element.name.toLowerCase() === values.name.toLowerCase()
     );

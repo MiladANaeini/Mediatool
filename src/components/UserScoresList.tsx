@@ -12,7 +12,7 @@ const UserScoresList = ({ userScores }: PropTypes) => {
     <>
       {userScores && (
         <div className="mt-2">
-          <H5 className="mb-1 mt-1">User Name: {userScores.name}</H5>
+          <H5 className="mb-1 mt-1">Scores of {userScores.name}</H5>
           {userScores.scores.map((item, index) => (
             <Grid>
               {index + 1}) {item}

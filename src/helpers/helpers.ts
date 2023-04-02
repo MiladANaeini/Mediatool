@@ -1,6 +1,6 @@
 import { MergedUserScoreType, ScoreType, UserType } from "../interfaces/interfaces";
 
-const findEachUsersScores = (userId: number,scoresList:ScoreType[]) => {
+const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
     let scores:number[] = [];
     scoresList.map((item) => {
       if (item.userId === userId) {
@@ -10,7 +10,7 @@ const findEachUsersScores = (userId: number,scoresList:ScoreType[]) => {
     return scores.sort((a, b) => b - a);
   };
 
-  export const sortUsers = (usersList:UserType[],scoresList:ScoreType[]) => {
+  export const sortUsers = (usersList: UserType[], scoresList: ScoreType[]) => {
     let usersData = usersList.map((user, i) => ({
       ...user,
       scores: findEachUsersScores(user._id,scoresList),
@@ -19,12 +19,20 @@ const findEachUsersScores = (userId: number,scoresList:ScoreType[]) => {
     return sortedUsers;
   };
 
-  export const getUserDetails = (userId:number,userListData:MergedUserScoreType[]) => {
+  export const getUserDetails = (userId: number, userListData: MergedUserScoreType[]) => {
     const user = userListData.find((element) => element._id === userId);
     if (!user) {
       return(null);
     } else{
         return(user);
-
     }
+  };
+
+
+  export const createNewUser = (name: string) => {
+    const newUser = {
+      name,
+      _id: Math.floor(Math.random() * 1000),
+    };
+    return newUser;
   };

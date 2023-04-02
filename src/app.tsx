@@ -15,7 +15,7 @@ import { useToast } from "@chakra-ui/react";
 import { ExcelDropzone, ExcelRow } from "./components/excel-dropzone.js";
 import usersList from "./data/users";
 import scoresList from "./data/scores";
-import { sortUsers, getUserDetails } from "./helpers/helpers.js";
+import { sortUsers, getUserDetails, createNewUser } from "./helpers/helpers.js";
 import "./index.css";
 import AddUserForm from "./components/AddUserForm.js";
 import UserList from "./components/UserList.js";
@@ -68,14 +68,6 @@ export default function App() {
     setScoresData(allScoresData);
     const sortedUsers = sortUsers(allUsers, allScoresData);
     setAllUserData(sortedUsers);
-  };
-
-  const createNewUser = (name: string) => {
-    const newUser = {
-      name,
-      _id: Math.floor(Math.random() * 1000),
-    };
-    return newUser;
   };
 
   useEffect(() => {

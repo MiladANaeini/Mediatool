@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useEffect } from "react";
-import { Link, ChakraProvider, Grid, GridItem, Card } from "@chakra-ui/react";
+import { Link, ChakraProvider } from "@chakra-ui/react";
 import {
   Container,
   Box,
@@ -8,12 +8,7 @@ import {
   HStack,
   H1,
   H2,
-  H5,
-  Form,
-  Button,
-  TextField,
   Icon,
-  NumberInput,
 } from "@northlight/ui";
 import { PlusSolid } from "@northlight/icons";
 import { useToast } from "@chakra-ui/react";
@@ -24,6 +19,7 @@ import scoresList from "./scores";
 import { sortUsers, getUserDetails } from "./helpers/helpers.js";
 import "./index.css";
 import AddUserForm from "./components/AddUserForm.js";
+import UserList from "./components/UserList.js";
 interface ExternalLinkProps {
   href: string;
   children: ReactNode;
@@ -48,7 +44,7 @@ export default function App() {
   const [userScores, setUserScores] = useState(null);
   const [userListData, setUserListData] = useState([...usersList]);
   const [scoresData, setScoresData] = useState([...scoresList]);
-  const [addUser, setAddUser] = useState(false);
+  const [addUser, setAddUser] = useState<boolean>(false);
   function handleSheetData(data: ExcelRow[]) {
     // replace this log with actual handling of the data
     console.log(data);
@@ -63,7 +59,6 @@ export default function App() {
   };
 
   const onSubmit = (values) => {
-    console.log(111);
     let user = allUserData.find(
       (element) => element.name.toLowerCase() === values.name.toLowerCase()
     );
@@ -103,7 +98,7 @@ export default function App() {
     setAddUser(false);
   };
 
-  const handleUserScores = (userId) => {
+  const handleUserScores = (userId: number) => {
     setUserScores(getUserDetails(userId, allUserData));
   };
   return (
@@ -127,36 +122,11 @@ export default function App() {
                   icon={<Icon as={PlusSolid} />}
                 />
               </H2>
-              <Card className="mt-1 mb-1">
-                <div className="p-1">
-                  <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                    {allUserData.map((item, i) => (
-                      <GridItem w="100%" h="10">
-                        <Button
-                          variant="brand"
-                          onClick={() => {
-                            handleUserScores(item._id);
-                          }}
-                        >
-                          {i + 1}. {item.name} - {item.scores[0]}
-                        </Button>
-                      </GridItem>
-                    ))}
-                  </Grid>
-                  {userScores && (
-                    <div className="mt-2">
-                      <H5 className="mb-1 mt-1">
-                        User Name: {userScores.name}
-                      </H5>
-                      {userScores.scores.map((item, index) => (
-                        <Grid>
-                          {index + 1}) {item}
-                        </Grid>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Card>
+              <UserList
+                allUserData={allUserData}
+                handleUserScores={handleUserScores}
+                userScores={userScores}
+              />
               {addUser && <AddUserForm onSubmit={onSubmit} />}
             </Box>
           </VStack>

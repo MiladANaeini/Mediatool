@@ -59,19 +59,30 @@ export default function App() {
         });
         return;
       }
-      const newUser = createNewUser(data[i].name);
-      allUsers.push(newUser);
-      allScoresData.push({ userId: newUser._id, score: data[i].score });
-      allUsers.push(newUser);
+      let checkUserExistance = allUsers.find(
+        (element) =>
+          element.name.toLowerCase() === data[i].name.toLocaleLowerCase()
+      );
+      if (!checkUserExistance) {
+        const newUser = createNewUser(data[i].name);
+        allUsers.push(newUser);
+        allScoresData.push({ userId: newUser._id, score: data[i].score });
+      } else {
+        allScoresData.push({
+          userId: checkUserExistance._id,
+          score: data[i].score,
+        });
+      }
+      setUserListData(allUsers);
+      setScoresData(allScoresData);
+      const sortedUsers = sortUsers(allUsers, allScoresData);
+      setAllUserData(sortedUsers);
     }
-    setUserListData(allUsers);
-    setScoresData(allScoresData);
-    const sortedUsers = sortUsers(allUsers, allScoresData);
-    setAllUserData(sortedUsers);
   };
 
   useEffect(() => {
     const sortedUsers = sortUsers(usersList, scoresList);
+    console.log(sortedUsers);
     setAllUserData(sortedUsers);
   }, []);
 

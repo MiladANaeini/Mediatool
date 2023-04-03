@@ -1,5 +1,12 @@
 import React from "react";
-import { HStack, Form, Button, TextField, H5 } from "@northlight/ui";
+import {
+  HStack,
+  Form,
+  Button,
+  TextField,
+  H5,
+  NumberInputField,
+} from "@northlight/ui";
 import { FormValuesType } from "../interfaces/interfaces";
 
 interface PropTypes {
@@ -19,7 +26,7 @@ const AddUserForm = ({ onSubmit }: PropTypes) => {
       >
         <HStack alignItems="end" w="600px">
           <TextField name="name" label="User Name" isRequired={true} />
-          <TextField name="score" label="User Score" isRequired={true} />
+          <NumberInputField name="score" label="User Score" isRequired={true} />
           <Button type="submit" variant="success" w="400px">
             Validate
           </Button>

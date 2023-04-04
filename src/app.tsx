@@ -89,7 +89,7 @@ export default function App() {
       variant: "solid",
       status: "success",
       title: "Score Updated!",
-      description: `User list successfully updated!`,
+      description: "User list successfully updated!",
     });
     setAllUserData(sortUsers(allUserData, values.name, values.score));
     setAddUser(false);

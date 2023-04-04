@@ -25,9 +25,9 @@ const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
   };
 
 
-  export const sortUsers = (allUserData:MergedUserScoreType[], name:string, score:number) =>{
+  export const sortUsers = (allUserData: MergedUserScoreType[], name: string, score: number) =>{
     let user = getUserDetails(name, allUserData);
-    let newUserData :MergedUserScoreType[] = []
+    let newUserData: MergedUserScoreType[] = []
     if (user) {
       //the user already exists
       let existingUser = { ...user };
@@ -54,13 +54,12 @@ const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
 
 
   export const createNewUser = (name: string,score: number) => {
-    const newUser = {
-      name,
-      _id: Math.floor(Math.random() * 1000),
-      scores:[score],
-      maxScore:score
-    };
-    return newUser;
+    return {
+        name,
+        _id: Math.floor(Math.random() * 1000),
+        scores:[score],
+        maxScore:score
+      };
   };
 
   

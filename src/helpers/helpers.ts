@@ -19,13 +19,8 @@ const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
     return sortedUsers;
   };
 
-  export const getUserDetails = (userId: number, userListData: MergedUserScoreType[]) => {
-    const user = userListData.find((element) => element._id === userId);
-    if (!user) {
-      return(null);
-    } else{
-        return(user);
-    }
+  export const getUserDetails = (name: string, userListData: MergedUserScoreType[]) => {
+   return  userListData.find((element) => element.name.toLocaleLowerCase() === name.toLocaleLowerCase()) || null
   };
 
 

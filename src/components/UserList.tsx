@@ -6,7 +6,7 @@ import { UserScoreType, MergedUserScoreType } from "../interfaces/interfaces";
 
 interface PropTypes {
   userScores: UserScoreType;
-  handleUserScores: (userId: number) => void;
+  handleUserScores: (name: string) => void;
   allUserData: MergedUserScoreType[];
 }
 const UserList = ({ allUserData, handleUserScores, userScores }: PropTypes) => {
@@ -19,7 +19,7 @@ const UserList = ({ allUserData, handleUserScores, userScores }: PropTypes) => {
               <Button
                 variant="brand"
                 onClick={() => {
-                  handleUserScores(item._id);
+                  handleUserScores(item.name);
                 }}
               >
                 {i + 1}. {item.name} - {item.scores[0]}

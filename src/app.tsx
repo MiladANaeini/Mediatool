@@ -82,7 +82,6 @@ export default function App() {
 
   useEffect(() => {
     const sortedUsers = sortUsers(usersList, scoresList);
-    console.log(sortedUsers);
     setAllUserData(sortedUsers);
   }, []);
 
@@ -91,9 +90,7 @@ export default function App() {
   };
 
   const onSubmit = (values: FormValuesType) => {
-    let user = allUserData.find(
-      (element) => element.name.toLowerCase() === values.name.toLowerCase()
-    );
+    let user = getUserDetails(values.name, allUserData);
     const allUsers = [...userListData];
     const allScoresData = [...scoresData];
     if (user) {
@@ -126,9 +123,9 @@ export default function App() {
     setUserScores(null);
     setAddUser(false);
   };
-
-  const handleUserScores = (userId: number) => {
-    setUserScores(getUserDetails(userId, allUserData));
+  //-------------- show User scores on click ------------------
+  const handleUserScores = (name: string) => {
+    setUserScores(getUserDetails(name, allUserData));
   };
   return (
     <ChakraProvider>

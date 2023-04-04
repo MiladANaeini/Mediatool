@@ -40,38 +40,11 @@ export default function App() {
       });
       return;
     }
-    // const allUsers = [...userListData];
-    // const allScoresData = [...scoresData];
-    // for (let i: number = 0; i < data.length; i++) {
-    //   if (!data[i].name || !data[i].score) {
-    //     toast({
-    //       position: "top",
-    //       variant: "solid",
-    //       status: "error",
-    //       title: "Wrong excel sheet",
-    //       description: `The excel file you uploaded does not include the right data set!`,
-    //     });
-    //     return;
-    //   }
-    //   let checkUserExistance = allUsers.find(
-    //     (element) =>
-    //       element.name.toLowerCase() === data[i].name.toLocaleLowerCase()
-    //   );
-    //   if (!checkUserExistance) {
-    //     const newUser = createNewUser(data[i].name);
-    //     allUsers.push(newUser);
-    //     allScoresData.push({ userId: newUser._id, score: data[i].score });
-    //   } else {
-    //     allScoresData.push({
-    //       userId: checkUserExistance._id,
-    //       score: data[i].score,
-    //     });
-    //   }
-    //   setUserListData(allUsers);
-    //   setScoresData(allScoresData);
-    //   const sortedUsers = sortUsers(allUsers, allScoresData);
-    //   setAllUserData(sortedUsers);
-    // }
+    let newUserData = [...allUserData];
+    data.map((item) => {
+      newUserData = sortUsers(newUserData, item.name, item.score);
+    });
+    setAllUserData(newUserData);
   };
 
   useEffect(() => {
@@ -94,7 +67,6 @@ export default function App() {
     setAllUserData(sortUsers(allUserData, values.name, values.score));
     setAddUser(false);
   };
-  //-------------- show User scores on click ------------------
 
   return (
     <ChakraProvider>

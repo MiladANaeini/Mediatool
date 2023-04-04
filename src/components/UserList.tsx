@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, GridItem, Card } from "@chakra-ui/react";
 import { Button } from "@northlight/ui";
 import UserScoresList from "./UserScoresList";
-import { UserScoreType, MergedUserScoreType } from "../interfaces/interfaces";
+import { MergedUserScoreType } from "../interfaces/interfaces";
 
 interface PropTypes {
-  userScores: UserScoreType;
-  handleUserScores: (name: string) => void;
   allUserData: MergedUserScoreType[];
 }
-const UserList = ({ allUserData, handleUserScores, userScores }: PropTypes) => {
+
+const UserList = ({ allUserData }: PropTypes) => {
+  const [userScores, setUserScores] = useState<MergedUserScoreType | null>(
+    null
+  );
+  useEffect(() => {
+    setUserScores(null);
+  }, [allUserData]);
+
+  const handleUserScores = (item: MergedUserScoreType) => {
+    // clicked user information
+    setUserScores(item);
+  };
   return (
     <Card className="mt-1 mb-1">
       <div className="p-1">
@@ -19,10 +29,10 @@ const UserList = ({ allUserData, handleUserScores, userScores }: PropTypes) => {
               <Button
                 variant="brand"
                 onClick={() => {
-                  handleUserScores(item.name);
+                  handleUserScores(item);
                 }}
               >
-                {i + 1}. {item.name} - {item.scores[0]}
+                {i + 1}. {item.name} - {item.maxScore}
               </Button>
             </GridItem>
           ))}

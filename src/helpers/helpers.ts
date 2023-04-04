@@ -10,12 +10,13 @@ const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
     return scores.sort((a, b) => b - a);
   };
 
-  export const sortUsers = (usersList: UserType[], scoresList: ScoreType[]) => {
-    let usersData = usersList.map((user, i) => ({
+  export const sortInitialUsers = (usersList: UserType[], scoresList: ScoreType[]) => {
+    let usersData = usersList.map((user) => ({
       ...user,
       scores: findEachUsersScores(user._id,scoresList),
+      maxScore:findEachUsersScores(user._id,scoresList)[0],
     }));
-    const sortedUsers = usersData.sort((a, b) => b.scores[0] - a.scores[0]);
+    const sortedUsers = usersData.sort((a, b) => b.maxScore - a.maxScore);
     return sortedUsers;
   };
 
@@ -24,10 +25,44 @@ const findEachUsersScores = (userId: number, scoresList: ScoreType[]) => {
   };
 
 
-  export const createNewUser = (name: string) => {
+  export const sortUsers = (allUserData:MergedUserScoreType[], name:string, score:number) =>{
+    let user = getUserDetails(name, allUserData);
+    let newUserData :MergedUserScoreType[] = []
+    if (user) {
+      //the user already exists
+      let existingUser = { ...user };
+      existingUser.scores.push(score);
+      if(score > existingUser.maxScore){
+        existingUser.maxScore= score
+      }
+      existingUser.scores = existingUser.scores.sort((a, b) => b - a);
+       newUserData = allUserData.map((item) => {
+        if (item._id === existingUser._id) {
+          return existingUser;
+        } else {
+          return item;
+        }
+      });
+    } else {
+      //adding new user
+      newUserData = [...allUserData];
+      const createdUser = createNewUser(name, score);
+      newUserData.push(createdUser);
+    }
+    return newUserData.sort((a, b) => b.maxScore - a.maxScore);
+  }
+
+
+  export const createNewUser = (name: string,score: number) => {
     const newUser = {
       name,
       _id: Math.floor(Math.random() * 1000),
+      scores:[score],
+      maxScore:score
     };
     return newUser;
   };
+
+  
+
+  

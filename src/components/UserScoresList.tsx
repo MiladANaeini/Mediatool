@@ -1,10 +1,10 @@
 import React from "react";
 import { Grid } from "@chakra-ui/react";
 import { H5 } from "@northlight/ui";
-import { UserScoreType } from "../interfaces/interfaces";
+import { MergedUserScoreType } from "../interfaces/interfaces";
 
 interface PropTypes {
-  userScores: UserScoreType | null;
+  userScores: MergedUserScoreType | null;
 }
 
 const UserScoresList = ({ userScores }: PropTypes) => {

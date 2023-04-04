@@ -15,14 +15,11 @@ import { useToast } from "@chakra-ui/react";
 import { ExcelDropzone, ExcelRow } from "./components/excel-dropzone.js";
 import usersList from "./data/users";
 import scoresList from "./data/scores";
-import { sortUsers, getUserDetails, createNewUser } from "./helpers/helpers.js";
+import { sortInitialUsers, sortUsers } from "./helpers/helpers.js";
 import "./index.css";
 import AddUserForm from "./components/AddUserForm.js";
 import UserList from "./components/UserList.js";
 import {
-  ScoreType,
-  UserType,
-  UserScoreType,
   FormValuesType,
   MergedUserScoreType,
 } from "./interfaces/interfaces.js";
@@ -30,9 +27,6 @@ import {
 export default function App() {
   const toast = useToast();
   const [allUserData, setAllUserData] = useState<MergedUserScoreType[]>([]);
-  const [userScores, setUserScores] = useState<UserScoreType | null>(null);
-  const [userListData, setUserListData] = useState<UserType[]>([...usersList]);
-  const [scoresData, setScoresData] = useState<ScoreType[]>([...scoresList]);
   const [addUser, setAddUser] = useState<boolean>(false);
 
   const handleSheetData = (data: ExcelRow[]) => {
@@ -46,42 +40,42 @@ export default function App() {
       });
       return;
     }
-    const allUsers = [...userListData];
-    const allScoresData = [...scoresData];
-    for (let i: number = 0; i < data.length; i++) {
-      if (!data[i].name || !data[i].score) {
-        toast({
-          position: "top",
-          variant: "solid",
-          status: "error",
-          title: "Wrong excel sheet",
-          description: `The excel file you uploaded does not include the right data set!`,
-        });
-        return;
-      }
-      let checkUserExistance = allUsers.find(
-        (element) =>
-          element.name.toLowerCase() === data[i].name.toLocaleLowerCase()
-      );
-      if (!checkUserExistance) {
-        const newUser = createNewUser(data[i].name);
-        allUsers.push(newUser);
-        allScoresData.push({ userId: newUser._id, score: data[i].score });
-      } else {
-        allScoresData.push({
-          userId: checkUserExistance._id,
-          score: data[i].score,
-        });
-      }
-      setUserListData(allUsers);
-      setScoresData(allScoresData);
-      const sortedUsers = sortUsers(allUsers, allScoresData);
-      setAllUserData(sortedUsers);
-    }
+    // const allUsers = [...userListData];
+    // const allScoresData = [...scoresData];
+    // for (let i: number = 0; i < data.length; i++) {
+    //   if (!data[i].name || !data[i].score) {
+    //     toast({
+    //       position: "top",
+    //       variant: "solid",
+    //       status: "error",
+    //       title: "Wrong excel sheet",
+    //       description: `The excel file you uploaded does not include the right data set!`,
+    //     });
+    //     return;
+    //   }
+    //   let checkUserExistance = allUsers.find(
+    //     (element) =>
+    //       element.name.toLowerCase() === data[i].name.toLocaleLowerCase()
+    //   );
+    //   if (!checkUserExistance) {
+    //     const newUser = createNewUser(data[i].name);
+    //     allUsers.push(newUser);
+    //     allScoresData.push({ userId: newUser._id, score: data[i].score });
+    //   } else {
+    //     allScoresData.push({
+    //       userId: checkUserExistance._id,
+    //       score: data[i].score,
+    //     });
+    //   }
+    //   setUserListData(allUsers);
+    //   setScoresData(allScoresData);
+    //   const sortedUsers = sortUsers(allUsers, allScoresData);
+    //   setAllUserData(sortedUsers);
+    // }
   };
 
   useEffect(() => {
-    const sortedUsers = sortUsers(usersList, scoresList);
+    const sortedUsers = sortInitialUsers(usersList, scoresList);
     setAllUserData(sortedUsers);
   }, []);
 
@@ -90,43 +84,18 @@ export default function App() {
   };
 
   const onSubmit = (values: FormValuesType) => {
-    let user = getUserDetails(values.name, allUserData);
-    const allUsers = [...userListData];
-    const allScoresData = [...scoresData];
-    if (user) {
-      //the user already exists
-      allScoresData.push({ userId: user._id, score: Number(values.score) });
-      toast({
-        position: "top",
-        variant: "solid",
-        status: "success",
-        title: "Score Updated!",
-        description: `The scores of "${values.name}" were updated!`,
-      });
-    } else {
-      //a new ueser is added
-      const newUser = createNewUser(values.name);
-      allScoresData.push({ userId: newUser._id, score: values.score });
-      allUsers.push(newUser);
-      toast({
-        position: "top",
-        variant: "solid",
-        status: "success",
-        title: "User Added",
-        description: `The new user "${values.name}" was added!`,
-      });
-    }
-    setUserListData(allUsers);
-    setScoresData(allScoresData);
-    const sortedUsers = sortUsers(allUsers, allScoresData);
-    setAllUserData(sortedUsers);
-    setUserScores(null);
+    toast({
+      position: "top",
+      variant: "solid",
+      status: "success",
+      title: "Score Updated!",
+      description: `User list successfully updated!`,
+    });
+    setAllUserData(sortUsers(allUserData, values.name, values.score));
     setAddUser(false);
   };
   //-------------- show User scores on click ------------------
-  const handleUserScores = (name: string) => {
-    setUserScores(getUserDetails(name, allUserData));
-  };
+
   return (
     <ChakraProvider>
       <Container maxW="6xl" padding="4">
@@ -148,11 +117,7 @@ export default function App() {
                   icon={<Icon as={PlusSolid} />}
                 />
               </H2>
-              <UserList
-                allUserData={allUserData}
-                handleUserScores={handleUserScores}
-                userScores={userScores}
-              />
+              <UserList allUserData={allUserData} />
               {addUser && <AddUserForm onSubmit={onSubmit} />}
             </Box>
           </VStack>

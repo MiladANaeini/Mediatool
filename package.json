@@ -2,8 +2,7 @@
   "name": "react-starter-kit",
   "version": "1.0.0",
   "homepage": "https://MiladANaeini.github.io/Mediatool",
-  "description": "",
-  "main": "index.js",
+  "description": "A programming tesk done for MediaTool",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

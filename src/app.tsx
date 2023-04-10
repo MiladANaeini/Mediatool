@@ -44,6 +44,7 @@ export default function App() {
     data.map((item) => {
       newUserData = sortUsers(newUserData, item.name, item.score);
     });
+    //could also have used forEach as we do not need a new returned array
     setAllUserData(newUserData);
   };
 
